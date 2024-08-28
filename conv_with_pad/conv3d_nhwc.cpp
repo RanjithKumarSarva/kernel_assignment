@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include "../utils/utils.hpp"
 
 using namespace std;
 
@@ -78,19 +79,21 @@ int main() {
     vector<vector<vector<vector<float>>>> kernel(3, vector<vector<vector<float>>>(
                                                         3, vector<vector<float>>(
                                                             3, vector<float>(2, 0.5))));
+    
+    auto kernel_data = read_npy_file("/home/ubuntu/acl_resnet18_inference-main/dnnl_resnet18_inference/inputs/py_input.npy");
 
     // Output tensor
     vector<vector<vector<vector<float>>>> output;
 
-    // // Perform the convolution
-    conv3d(input, kernel, output, 1, 1);
+    // // // Perform the convolution
+    // conv3d(input, kernel, output, 1, 1);
 
-    // // Print the output dimensions and the first value for verification
-    cout << "Output shape: [" << output.size() << ", "
-         << output[0].size() << ", "
-         << output[0][0].size() << ", "
-         << output[0][0][0].size() << "]" << endl;
-    cout << "First output value: " << output[0][0][0][0] << endl;
+    // // // Print the output dimensions and the first value for verification
+    // cout << "Output shape: [" << output.size() << ", "
+    //      << output[0].size() << ", "
+    //      << output[0][0].size() << ", "
+    //      << output[0][0][0].size() << "]" << endl;
+    // cout << "First output value: " << output[0][0][0][0] << endl;
 
     return 0;
 }

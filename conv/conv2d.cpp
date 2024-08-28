@@ -4,7 +4,7 @@
 using namespace std;
 
 // Define the convolution function
-void conv3d(const vector<vector<vector<vector<float>>>> &input,
+void conv2d(const vector<vector<vector<vector<float>>>> &input,
             const vector<vector<vector<vector<float>>>> &kernel,
             vector<vector<vector<vector<float>>>> &output) {
 
@@ -64,7 +64,7 @@ int main() {
     vector<vector<vector<vector<float>>>> output;
 
     // // Perform the convolution
-    conv3d(input, kernel, output);
+    conv2d(input, kernel, output);
 
     // // Print the output dimensions and the first value for verification
     cout << "Output shape: [" << output.size() << ", "

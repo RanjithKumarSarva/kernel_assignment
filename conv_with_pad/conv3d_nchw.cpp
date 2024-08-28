@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include "../utils/utils.hpp"
 
 using namespace std;
 
@@ -75,23 +76,41 @@ void conv3d(const vector<vector<vector<vector<float>>>> &input,
             }
         }
     }
+    vector<float> output_1d;
+    for (int b = 0; b < batch_size; b++)
+        for (int i = 0; i < out_channels; i++)
+        {
+            for (int j = 0; j < output_height; j++)
+            {
+                for (int k = 0; k < output_width; k++)
+                {
+                    output_1d.push_back(output[b][i][j][k]);
+                }
+            }
+        }
+
+    write_to_binary("../outputs/conv3d_nchw_cpp.bin", output_1d);
 }
 
 int main() {
     // input tensor: [batch_size, channels, height, width]
-    vector<vector<vector<vector<float>>>> input(1, vector<vector<vector<float>>>(
-                                                      64, vector<vector<float>>(
-                                                          64, vector<float>(64, 1.0))));
+    // vector<vector<vector<vector<float>>>> input(1, vector<vector<vector<float>>>(
+    //                                                   64, vector<vector<float>>(
+    //                                                       64, vector<float>(64, 1.0))));
 
     // kernel tensor: [out_channels, in_channels, kernel_height, kernel_width]
-    vector<vector<vector<vector<float>>>> kernel(64, vector<vector<vector<float>>>(
-                                                        64, vector<vector<float>>(
-                                                            3, vector<float>(3, 0.5))));
+    // vector<vector<vector<vector<float>>>> kernel(64, vector<vector<vector<float>>>(
+    //                                                     64, vector<vector<float>>(
+    //                                                         3, vector<float>(3, 0.5))));
 
+    vector<int> input_dims = {1,3,224,224};
+    vector<int> kernel_dims = {64,3,7,7};
+    auto input = read_npy_file_nchw("/home/ubuntu/acl_resnet18_inference-main/dnnl_resnet18_inference/inputs/py_input.npy", input_dims);
+    auto kernel = read_npy_file_nchw("/home/ubuntu/kernel_practice/weights/conv1_wt.npy", kernel_dims);
     // Output tensor
     vector<vector<vector<vector<float>>>> output;
 
-    // // Perform the convolution
+    // // // Perform the convolution
     conv3d(input, kernel, output, 1, 1);
 
     // // Print the output dimensions and the first value for verification
