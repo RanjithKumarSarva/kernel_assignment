@@ -26,23 +26,6 @@ void conv3d(const vector<vector<vector<vector<float>>>> &input,
                                   out_channels, vector<vector<float>>(
                                                   output_height, vector<float>(output_width, 0))));
 
-    // // Apply padding if needed
-    // vector<vector<vector<vector<float>>>> padded_input = input;
-    // if (padding > 0) {
-    //     for (int b = 0; b < batch_size; ++b) {
-    //         for (int c = 0; c < in_channels; ++c) {
-    //             for (int i = 0; i < input_height + 2 * padding; ++i) {
-    //                 for (int j = 0; j < input_width + 2 * padding; ++j) {
-    //                     if (i >= padding && i < input_height + padding && j >= padding && j < input_width + padding) {
-    //                         padded_input[b][c][i][j] = input[b][c][i - padding][j - padding];
-    //                     } else {
-    //                         padded_input[b][c][i][j] = 0;
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
     vector<vector<vector<vector<float>>>> padded_input(batch_size, vector<vector<vector<float>>>(
             in_channels, vector<vector<float>>(
             input_height + 2 * padding, vector<float>(input_width + 2 * padding, 0))));
@@ -93,20 +76,10 @@ void conv3d(const vector<vector<vector<vector<float>>>> &input,
 }
 
 int main() {
-    // input tensor: [batch_size, channels, height, width]
-    // vector<vector<vector<vector<float>>>> input(1, vector<vector<vector<float>>>(
-    //                                                   64, vector<vector<float>>(
-    //                                                       64, vector<float>(64, 1.0))));
-
-    // kernel tensor: [out_channels, in_channels, kernel_height, kernel_width]
-    // vector<vector<vector<vector<float>>>> kernel(64, vector<vector<vector<float>>>(
-    //                                                     64, vector<vector<float>>(
-    //                                                         3, vector<float>(3, 0.5))));
-
     vector<int> input_dims = {1,3,224,224};
     vector<int> kernel_dims = {64,3,7,7};
-    auto input = read_npy_file_nchw("/home/ubuntu/acl_resnet18_inference-main/dnnl_resnet18_inference/inputs/py_input.npy", input_dims);
-    auto kernel = read_npy_file_nchw("/home/ubuntu/kernel_practice/weights/conv1_wt.npy", kernel_dims);
+    auto input = read_npy_file("../inputs/py_input.npy", input_dims);
+    auto kernel = read_npy_file("../weights/conv1_wt.npy", kernel_dims);
     // Output tensor
     vector<vector<vector<vector<float>>>> output;
 

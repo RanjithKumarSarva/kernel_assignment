@@ -1,6 +1,6 @@
 #include "utils.hpp"
 // template <typename T>
-std::vector<std::vector<std::vector<std::vector<float>>>> read_npy_file_nchw(const std::string &filename,
+std::vector<std::vector<std::vector<std::vector<float>>>> read_npy_file(const std::string &filename,
                                                                         std::vector<int> &ip_shape ) {
     std::ifstream file(filename, std::ios::binary);
     if (!file.is_open()) {
@@ -80,13 +80,6 @@ std::vector<std::vector<std::vector<std::vector<float>>>> read_npy_file_nchw(con
                                                           H, std::vector<float>(W, 0))));
     std::memcpy(data.data(), &buffer[data_start], data_size);
 
-    // Check endianness and swap bytes if necessary
-    // if (dtype.find(">") != std::string::npos) {
-    //     for (size_t i = 0; i < total_size; ++i) {
-    //         char* p = reinterpret_cast<char*>(&data[i]);
-    //         std::reverse(p, p + sizeof(float));
-    //     }
-    // }
     // Fill the 4D vector with data from the 1D vector
     for (size_t n = 0; n < N; ++n) {
         for (size_t c = 0; c < C; ++c) {

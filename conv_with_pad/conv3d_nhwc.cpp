@@ -48,15 +48,11 @@ void conv3d(const vector<vector<vector<vector<float>>>> &input,
             for (int j = 0; j < output_width; ++j) {
                 for (int oc = 0; oc < out_channels; ++oc) {
                     float sum = 0.0;
-                    std::cout<<"["<<b<<"]"<<"["<<i<<"]"<<"["<<j<<"]"<<"["<<oc<<"]"<<std::endl;
-                    std::cout<<"kernelstart"<<std::endl;
                     for (int ki = 0; ki < kernel_height; ++ki) {
                         for (int kj = 0; kj < kernel_width; ++kj) {
                             for (int ic = 0; ic < in_channels; ++ic) {
-                                // std::cout<<"["<<ki<<"]"<<"["<<kj<<"]"<<"["<<ic<<"]"<<std::endl;
                                 int input_i = i * stride + ki;
                                 int input_j = j * stride + kj;
-                                std::cout<<"["<<b<<"]"<<"["<<input_i<<"]"<<"["<<input_j<<"]"<<"["<<ic<<"]"<<std::endl;
                                 sum += padded_input[b][input_i][input_j][ic] * kernel[ki][kj][ic][oc];
                             }
                         }
@@ -67,33 +63,41 @@ void conv3d(const vector<vector<vector<vector<float>>>> &input,
             }
         }
     }
+    vector<float> output_1d;
+    for (int b = 0; b < batch_size; b++)
+
+            for (int j = 0; j < output_height; j++)
+            {
+                for (int k = 0; k < output_width; k++)
+                    for (int i = 0; i < out_channels; i++)
+                    {
+                {
+                    output_1d.push_back(output[b][j][k][i]);
+                }
+            }
+        }
+
+    write_to_binary("../outputs/conv3d_nhwc_cpp.bin", output_1d);
 }
 
 int main() {
-    // input tensor: [batch_size, height, width, channels= 1x64x64x3]
-    vector<vector<vector<vector<float>>>> input(1, vector<vector<vector<float>>>(
-                                                      6, vector<vector<float>>(
-                                                          6, vector<float>(3, 1.0))));
-
-    // kernel [ kernel_height, kernel_width,in_channels, out_channels= 3x3x3x64]
-    vector<vector<vector<vector<float>>>> kernel(3, vector<vector<vector<float>>>(
-                                                        3, vector<vector<float>>(
-                                                            3, vector<float>(2, 0.5))));
-    
-    auto kernel_data = read_npy_file("/home/ubuntu/acl_resnet18_inference-main/dnnl_resnet18_inference/inputs/py_input.npy");
+    vector<int> input_dims = {1,224,224,3};
+    vector<int> kernel_dims = {7,7,3,64};
+    auto input = read_npy_file("../inputs/py_input_nhwc.npy", input_dims);
+    auto kernel = read_npy_file("../weights/conv1_wt_nhwc.npy", kernel_dims);
 
     // Output tensor
     vector<vector<vector<vector<float>>>> output;
 
     // // // Perform the convolution
-    // conv3d(input, kernel, output, 1, 1);
+    conv3d(input, kernel, output, 1, 1);
 
-    // // // Print the output dimensions and the first value for verification
-    // cout << "Output shape: [" << output.size() << ", "
-    //      << output[0].size() << ", "
-    //      << output[0][0].size() << ", "
-    //      << output[0][0][0].size() << "]" << endl;
-    // cout << "First output value: " << output[0][0][0][0] << endl;
+    // // Print the output dimensions and the first value for verification
+    cout << "Output shape: [" << output.size() << ", "
+         << output[0].size() << ", "
+         << output[0][0].size() << ", "
+         << output[0][0][0].size() << "]" << endl;
+    cout << "First output value: " << output[0][0][0][0] << endl;
 
     return 0;
 }
