@@ -62,9 +62,6 @@ if __name__ == "__main__":
     conv.bias.data = bias_tensor
 
     output = conv(input_tensor)
-    print("input shape ", input_tensor.shape)
-    print("kernel shape ", kernel_tensor.shape)
-    print("output shape ", output.shape)
     output_np = output.detach().numpy()
     output_1d = output_np.flatten()    # Flatten to 1D array
 
@@ -74,6 +71,7 @@ if __name__ == "__main__":
     output_np = output_nhwc.detach().numpy()
     output_nhwc_1d = output_np.flatten()
     write_binary_file('../outputs/py_conv3d_nhwc_output.bin', output_nhwc_1d)
+    print("Python computation")
 
-    print("3D Convolution complete. Output written to 'py_conv3d_nchw_output.bin'.")
-    print("3D Convolution complete. Output written to 'py_conv3d_nhwc_output.bin'.")
+    print("\t3D Convolution complete. Output written to 'py_conv3d_nchw_output.bin'.")
+    print("\t3D Convolution complete. Output written to 'py_conv3d_nhwc_output.bin'.")

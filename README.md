@@ -39,10 +39,9 @@ pip install -r kernel_practice/requirements.txt
 ```
 Output shape: [1, 64, 220, 220]
 First output value: 0.542983
-input shape  torch.Size([1, 3, 224, 224])
-kernel shape  torch.Size([64, 3, 7, 7])
-output shape  torch.Size([1, 64, 220, 220])
-3D Convolution complete. Output written to 'py_filter_output.bin'.
+Python computation
+        3D Convolution complete. Output written to 'py_conv3d_nchw_output.bin'.
+        3D Convolution complete. Output written to 'py_conv3d_nhwc_output.bin'.
 Min difference:  0.0
 Max difference:  5.4836273e-06
 Mean difference:  2.3758271e-07
@@ -59,11 +58,9 @@ Files are identical
 ```
 Output shape: [1, 220, 220, 64]
 First output value: 0.542983
-input shape  torch.Size([1, 3, 224, 224])
-kernel shape  torch.Size([64, 3, 7, 7])
-output shape  torch.Size([1, 64, 220, 220])
-3D Convolution complete. Output written to 'py_conv3d_nchw_output.bin'.
-3D Convolution complete. Output written to 'py_conv3d_nhwc_output.bin'.
+Python computation
+        3D Convolution complete. Output written to 'py_conv3d_nchw_output.bin'.
+        3D Convolution complete. Output written to 'py_conv3d_nhwc_output.bin'.
 Min difference:  0.0
 Max difference:  0.0
 Mean difference:  0.0
